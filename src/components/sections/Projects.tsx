@@ -4,38 +4,22 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ExternalLink, ArrowRight } from 'lucide-react'
 import SectionHeading from '@/components/ui/SectionHeading'
+import { useLanguage } from '@/contexts/LanguageContext'
 
-const projects = [
-  {
-    title: 'Smart Warehouse Simulation Platform',
-    description:
-      'A real-time 3D simulation platform that models robot movements and warehouse layouts before physical deployment, reducing setup time significantly.',
-    tags: ['3D Simulation', 'Real-time', 'WebGL'],
-    gradient: 'from-sky-500/25 via-blue-500/10 to-transparent',
-    link: 'http://sim.incheonrobotics.com',
-    live: true,
-  },
-  {
-    title: 'Multi-Robot Coordination System',
-    description:
-      'AI-powered coordination system that manages a fleet of robots simultaneously, optimizing paths and preventing collisions in real-time.',
-    tags: ['AI/ML', 'Fleet Management', 'Path Planning'],
-    gradient: 'from-blue-600/25 via-indigo-500/10 to-transparent',
-    link: '#',
-    live: false,
-  },
-  {
-    title: 'Logistics Automation Suite',
-    description:
-      'End-to-end warehouse management integration connecting robotic systems with WMS and ERP platforms for seamless, unified operation.',
-    tags: ['WMS Integration', 'ERP', 'Automation'],
-    gradient: 'from-indigo-500/25 via-sky-500/10 to-transparent',
-    link: '#',
-    live: false,
-  },
+const gradients = [
+  'from-sky-500/25 via-blue-500/10 to-transparent',
+  'from-blue-600/25 via-indigo-500/10 to-transparent',
+  'from-indigo-500/25 via-sky-500/10 to-transparent',
+]
+
+const links = [
+  { href: 'http://sim.incheonrobotics.com', live: true },
+  { href: '#', live: false },
+  { href: '#', live: false },
 ]
 
 export default function Projects() {
+  const { t } = useLanguage()
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -43,22 +27,23 @@ export default function Projects() {
     <section id="projects" className="py-24 bg-[#070d1b]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          badge="Our Work"
-          title="Projects & Portfolio"
-          subtitle="Explore our innovative robotics projects transforming warehouse operations across South Korea."
+          badge={t.projects.badge}
+          title={t.projects.title}
+          subtitle={t.projects.subtitle}
         />
 
         <div ref={ref} className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {projects.map((project, i) => (
+          {t.projects.items.map((project, i) => (
             <motion.div
-              key={project.title}
+              key={i}
               initial={{ opacity: 0, y: 40 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.12 }}
               className="group relative rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden hover:border-sky-500/30 transition-all duration-300 flex flex-col"
             >
-              {/* Visual placeholder */}
-              <div className={`h-48 bg-gradient-to-br ${project.gradient} relative overflow-hidden flex-shrink-0`}>
+              <div
+                className={`h-48 bg-gradient-to-br ${gradients[i]} relative overflow-hidden flex-shrink-0`}
+              >
                 <div className="absolute inset-0 grid-pattern opacity-40" />
                 <div className="absolute -bottom-10 -right-10 w-40 h-40 border border-sky-500/15 rounded-full" />
                 <div className="absolute -bottom-5 -right-5 w-24 h-24 border border-sky-500/15 rounded-full" />
@@ -86,18 +71,18 @@ export default function Projects() {
                 <p className="text-gray-400 text-sm leading-relaxed mb-5 flex-1">
                   {project.description}
                 </p>
-                {project.live ? (
+                {links[i].live ? (
                   <a
-                    href={project.link}
+                    href={links[i].href}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-sky-400 text-sm font-medium hover:text-sky-300 transition-colors"
                   >
-                    View Live Project <ExternalLink className="w-3.5 h-3.5" />
+                    {t.projects.view_live} <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 ) : (
                   <span className="inline-flex items-center gap-1.5 text-gray-600 text-sm font-medium">
-                    Coming Soon <ArrowRight className="w-3.5 h-3.5" />
+                    {t.projects.coming_soon} <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 )}
               </div>

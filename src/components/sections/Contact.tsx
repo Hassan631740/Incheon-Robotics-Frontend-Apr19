@@ -4,18 +4,16 @@ import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Mail, MapPin, Send, CheckCircle2 } from 'lucide-react'
 import SectionHeading from '@/components/ui/SectionHeading'
+import { useLanguage } from '@/contexts/LanguageContext'
 
-type FormState = {
-  name: string
-  email: string
-  company: string
-  message: string
-}
+type FormState = { name: string; email: string; company: string; message: string }
 
 const inputClass =
   'w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-600 text-sm focus:outline-none focus:border-sky-500/60 focus:bg-white/[0.07] transition-all'
 
 export default function Contact() {
+  const { t } = useLanguage()
+  const c = t.contact
   const [form, setForm] = useState<FormState>({ name: '', email: '', company: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -36,11 +34,7 @@ export default function Contact() {
   return (
     <section id="contact" className="py-24 bg-[#070d1b]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          badge="Contact"
-          title="Get In Touch"
-          subtitle="Ready to transform your warehouse operations? Let's discuss how our robotics solutions can work for you."
-        />
+        <SectionHeading badge={c.badge} title={c.title} subtitle={c.subtitle} />
 
         <div ref={ref} className="mt-16 grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* Info */}
@@ -51,18 +45,15 @@ export default function Contact() {
             className="lg:col-span-2 space-y-6"
           >
             <div>
-              <h3 className="text-xl font-bold text-white mb-3">Contact Information</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Reach out to learn how Incheon Robotics can revolutionize your warehouse operations
-                with cutting-edge robotic solutions.
-              </p>
+              <h3 className="text-xl font-bold text-white mb-3">{c.info_title}</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">{c.info_desc}</p>
             </div>
 
             <div className="space-y-3">
               <div className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
                 <Mail className="w-5 h-5 text-sky-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-gray-500 text-xs mb-1">Email</div>
+                  <div className="text-gray-500 text-xs mb-1">{c.email_label}</div>
                   <a
                     href="mailto:admin@incheonrobotics.com"
                     className="text-white text-sm hover:text-sky-400 transition-colors"
@@ -75,7 +66,7 @@ export default function Contact() {
               <div className="flex items-start gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02]">
                 <MapPin className="w-5 h-5 text-sky-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-gray-500 text-xs mb-1">Address</div>
+                  <div className="text-gray-500 text-xs mb-1">{c.address_label}</div>
                   <div className="text-white text-sm leading-relaxed">
                     인천글로벌캠퍼스 컴플렉스센터 B1006
                     <br />
@@ -98,10 +89,8 @@ export default function Contact() {
             {submitted ? (
               <div className="flex flex-col items-center justify-center text-center py-16 px-6 rounded-2xl border border-sky-500/20 bg-sky-500/5 h-full">
                 <CheckCircle2 className="w-14 h-14 text-sky-400 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Message Sent!</h3>
-                <p className="text-gray-400 text-sm">
-                  Thank you for reaching out. We'll get back to you within 24 hours.
-                </p>
+                <h3 className="text-xl font-bold text-white mb-2">{c.success_title}</h3>
+                <p className="text-gray-400 text-sm">{c.success_desc}</p>
               </div>
             ) : (
               <form
@@ -111,7 +100,7 @@ export default function Contact() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-medium text-gray-400 mb-1.5">
-                      Full Name
+                      {c.name_label}
                     </label>
                     <input
                       type="text"
@@ -119,13 +108,13 @@ export default function Contact() {
                       required
                       value={form.name}
                       onChange={handleChange}
-                      placeholder="John Doe"
+                      placeholder={c.name_placeholder}
                       className={inputClass}
                     />
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-gray-400 mb-1.5">
-                      Email Address
+                      {c.email_field_label}
                     </label>
                     <input
                       type="email"
@@ -133,33 +122,37 @@ export default function Contact() {
                       required
                       value={form.email}
                       onChange={handleChange}
-                      placeholder="john@company.com"
+                      placeholder={c.email_placeholder}
                       className={inputClass}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-gray-400 mb-1.5">Company</label>
+                  <label className="block text-xs font-medium text-gray-400 mb-1.5">
+                    {c.company_label}
+                  </label>
                   <input
                     type="text"
                     name="company"
                     value={form.company}
                     onChange={handleChange}
-                    placeholder="Your Company Name"
+                    placeholder={c.company_placeholder}
                     className={inputClass}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-gray-400 mb-1.5">Message</label>
+                  <label className="block text-xs font-medium text-gray-400 mb-1.5">
+                    {c.message_label}
+                  </label>
                   <textarea
                     name="message"
                     required
                     rows={5}
                     value={form.message}
                     onChange={handleChange}
-                    placeholder="Tell us about your warehouse automation needs..."
+                    placeholder={c.message_placeholder}
                     className={`${inputClass} resize-none`}
                   />
                 </div>
@@ -174,7 +167,7 @@ export default function Contact() {
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      Send Message
+                      {c.send_btn}
                     </>
                   )}
                 </button>

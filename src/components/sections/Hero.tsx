@@ -3,14 +3,12 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Globe, Zap } from 'lucide-react'
 import Link from 'next/link'
-
-const stats = [
-  { value: '3D', label: 'Real-time Simulation' },
-  { value: '100%', label: 'Custom Solutions' },
-  { value: '24/7', label: 'System Monitoring' },
-]
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function Hero() {
+  const { t } = useLanguage()
+  const h = t.hero
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
@@ -33,7 +31,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 text-sky-400 text-sm font-medium mb-8"
         >
           <Zap className="w-3.5 h-3.5" />
-          Warehouse Automation Solutions
+          {h.badge}
         </motion.div>
 
         {/* Headline */}
@@ -43,10 +41,14 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6"
         >
-          The Future of{' '}
-          <span className="gradient-text">Warehouse&nbsp;Robotics</span>
+          {h.heading_before && (
+            <>
+              {h.heading_before}{' '}
+            </>
+          )}
+          <span className="gradient-text">{h.heading_highlight}</span>
           <br />
-          is Here
+          {h.heading_after}
         </motion.h1>
 
         {/* Subheadline */}
@@ -56,8 +58,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          Incheon Robotics presents new standards in logistics automation through innovative
-          technology — maximizing efficiency and precision for your business.
+          {h.sub}
         </motion.p>
 
         {/* CTAs */}
@@ -74,14 +75,14 @@ export default function Hero() {
             className="group flex items-center gap-2 px-7 py-3.5 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-sky-500/30"
           >
             <Globe className="w-5 h-5" />
-            Try 3D Simulation
+            {h.cta_primary}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </a>
           <Link
             href="#contact"
             className="flex items-center gap-2 px-7 py-3.5 border border-sky-500/30 hover:border-sky-400 text-gray-300 hover:text-sky-400 font-semibold rounded-xl transition-all duration-300"
           >
-            Get in Touch
+            {h.cta_secondary}
           </Link>
         </motion.div>
 
@@ -92,7 +93,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mt-20 grid grid-cols-3 gap-8 max-w-sm mx-auto"
         >
-          {stats.map((stat) => (
+          {h.stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl sm:text-3xl font-bold gradient-text">{stat.value}</div>
               <div className="text-xs sm:text-sm text-gray-500 mt-1">{stat.label}</div>

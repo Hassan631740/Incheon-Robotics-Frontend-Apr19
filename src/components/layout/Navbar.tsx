@@ -3,24 +3,47 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Bot } from 'lucide-react'
-
-const navLinks = [
-  { href: '#about', label: 'About' },
-  { href: '#services', label: 'Services' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#contact', label: 'Contact' },
-]
+import { Menu, X, Bot, LogIn } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
+import type { Lang } from '@/lib/translations'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const { lang, setLang, t } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const navLinks = [
+    { href: '#about', label: t.nav.about },
+    { href: '#services', label: t.nav.services },
+    { href: '#projects', label: t.nav.projects },
+    { href: '#contact', label: t.nav.contact },
+  ]
+
+  const LangToggle = ({ mobile = false }: { mobile?: boolean }) => (
+    <div
+      className={`flex items-center rounded-lg border border-white/10 overflow-hidden ${mobile ? 'w-fit' : ''}`}
+    >
+      {(['en', 'kr'] as Lang[]).map((l) => (
+        <button
+          key={l}
+          onClick={() => setLang(l)}
+          className={`px-2.5 py-1 text-xs font-semibold uppercase transition-colors ${
+            lang === l
+              ? 'bg-sky-500 text-white'
+              : 'text-gray-400 hover:text-white hover:bg-white/5'
+          }`}
+        >
+          {l === 'en' ? 'EN' : '한'}
+        </button>
+      ))}
+    </div>
+  )
 
   return (
     <motion.nav
@@ -44,7 +67,8 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop */}
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -54,13 +78,24 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+
+            <LangToggle />
+
+            <Link
+              href="/login"
+              className="flex items-center gap-1.5 text-gray-300 hover:text-sky-400 transition-colors text-sm font-medium"
+            >
+              <LogIn className="w-4 h-4" />
+              {t.nav.login}
+            </Link>
+
             <a
               href="http://sim.incheonrobotics.com"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold rounded-lg transition-colors duration-200"
             >
-              Try Simulation
+              {t.nav.simulation}
             </a>
           </div>
 
@@ -74,6 +109,7 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -94,13 +130,26 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+
+              <div className="flex items-center justify-between pt-3 pb-1">
+                <Link
+                  href="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-1.5 text-gray-300 hover:text-sky-400 text-sm font-medium transition-colors"
+                >
+                  <LogIn className="w-4 h-4" />
+                  {t.nav.login}
+                </Link>
+                <LangToggle mobile />
+              </div>
+
               <a
                 href="http://sim.incheonrobotics.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block mt-3 px-4 py-2.5 bg-sky-500 text-white text-sm font-semibold rounded-lg text-center"
+                className="block mt-2 px-4 py-2.5 bg-sky-500 text-white text-sm font-semibold rounded-lg text-center"
               >
-                Try Simulation
+                {t.nav.simulation}
               </a>
             </div>
           </motion.div>

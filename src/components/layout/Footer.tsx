@@ -1,15 +1,20 @@
+'use client'
+
 import Link from 'next/link'
 import { Bot, Mail, MapPin } from 'lucide-react'
-
-const navLinks = [
-  { href: '#about', label: 'About' },
-  { href: '#services', label: 'Services' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#contact', label: 'Contact' },
-]
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function Footer() {
+  const { t } = useLanguage()
+  const f = t.footer
   const year = new Date().getFullYear()
+
+  const navLinks = [
+    { href: '#about', label: t.nav.about },
+    { href: '#services', label: t.nav.services },
+    { href: '#projects', label: t.nav.projects },
+    { href: '#contact', label: t.nav.contact },
+  ]
 
   return (
     <footer className="bg-[#030810] border-t border-white/5">
@@ -24,14 +29,11 @@ export default function Footer() {
                 Incheon <span className="text-sky-400">Robotics</span>
               </span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Presenting new standards in logistics automation through innovative technology —
-              maximizing efficiency and precision.
-            </p>
+            <p className="text-gray-500 text-sm leading-relaxed">{f.tagline}</p>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Quick Links</h4>
+            <h4 className="text-white font-semibold text-sm mb-4">{f.quick_links}</h4>
             <div className="space-y-2">
               {navLinks.map((link) => (
                 <Link
@@ -46,7 +48,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold text-sm mb-4">Contact</h4>
+            <h4 className="text-white font-semibold text-sm mb-4">{f.contact}</h4>
             <div className="space-y-3">
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-sky-400 flex-shrink-0" />
@@ -70,8 +72,12 @@ export default function Footer() {
         </div>
 
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-gray-600 text-xs">© {year} Incheon Robotics. All rights reserved.</p>
-          <p className="text-gray-600 text-xs font-mono">Reg: 348-86-03747</p>
+          <p className="text-gray-600 text-xs">
+            © {year} Incheon Robotics. {f.rights}
+          </p>
+          <p className="text-gray-600 text-xs font-mono">
+            {f.reg} 348-86-03747
+          </p>
         </div>
       </div>
     </footer>
