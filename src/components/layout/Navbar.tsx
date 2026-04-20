@@ -7,6 +7,7 @@ import { Menu, X, Bot, LogIn } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import type { Lang } from '@/lib/translations'
 import QuoteButton from '@/components/ui/QuoteButton'
+import MoodSwitcher from '@/components/ui/MoodSwitcher'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -81,6 +82,7 @@ export default function Navbar() {
             ))}
 
             <LangToggle />
+            <MoodSwitcher />
 
             <Link
               href="/login"
@@ -138,7 +140,10 @@ export default function Navbar() {
                   <LogIn className="w-4 h-4" />
                   {t.nav.login}
                 </Link>
-                <LangToggle mobile />
+                <div className="flex items-center gap-2">
+                  <MoodSwitcher mobile />
+                  <LangToggle mobile />
+                </div>
               </div>
 
               <div className="mt-2">
