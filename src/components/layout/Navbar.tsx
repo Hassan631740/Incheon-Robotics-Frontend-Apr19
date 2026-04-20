@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Bot, LogIn } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import type { Lang } from '@/lib/translations'
+import QuoteButton from '@/components/ui/QuoteButton'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -89,14 +90,11 @@ export default function Navbar() {
               {t.nav.login}
             </Link>
 
-            <a
-              href="http://sim.incheonrobotics.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold rounded-lg transition-colors duration-200"
-            >
-              {t.nav.simulation}
-            </a>
+            <QuoteButton
+              label={t.nav.quote}
+              variant="callout"
+              showIcon={false}
+            />
           </div>
 
           <button
@@ -143,14 +141,14 @@ export default function Navbar() {
                 <LangToggle mobile />
               </div>
 
-              <a
-                href="http://sim.incheonrobotics.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block mt-2 px-4 py-2.5 bg-sky-500 text-white text-sm font-semibold rounded-lg text-center"
-              >
-                {t.nav.simulation}
-              </a>
+              <div className="mt-2">
+                <QuoteButton
+                  label={t.nav.quote}
+                  variant="callout"
+                  showIcon={false}
+                  className="w-full justify-center"
+                />
+              </div>
             </div>
           </motion.div>
         )}
